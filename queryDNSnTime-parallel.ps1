@@ -29,16 +29,9 @@ Function Body{
         # Get-Job | Receive-Job
         # Getting the information back from the jobs
         foreach($job in Get-Job){
-            # Receive-Job -Job $job | Export-Csv ESX_settings.csv -NoTypeInformation -Force -Append | Out-null
-            # Receive-Job -Job $job | select -ExcludeProperty PSComputerName, RunspaceId, PSShowComputerName | Format-Table -AutoSize -Wrap
             Receive-Job -Job $job | select -ExcludeProperty PSComputerName, RunspaceId, PSShowComputerName | Export-Csv ESX_settings.csv -NoTypeInformation -Force -Append | Out-null
             Start-Sleep -s 2
             Remove-Job -Job $job -Force
-            #Receive-Job -Job $job | Out-File c:\Test.log -Append
-            #$output = Receive-Job -Job $job        
-            #Log ("OUTPUT: "+$output)
-            #Receive-Job -Job $job -OutVariable $foo
-            #Log ("FOO: "+$foo)
         }
         # Cleanup
         # Remove-Job *
@@ -67,7 +60,6 @@ $ScriptBlock = {
     @{n="NTPServer";e={$ntp}}, `
     @{n="ntpPolicy";e={$ntpService.Policy}}, `
     @{n="ntpServiceRunning";e={$ntpService.Running}}
-    #| Export-Csv query_outV2.csv -NoTypeInformation -Force -Append
     Disconnect-VIServer -Server * -Confirm:$false | Out-null
 }
 
